@@ -1,20 +1,20 @@
+import {addTodolistAC, removeTodolistAC} from '../todolists/todolists-reducer';
+import {TasksStateType} from "../../AppWithRedux";
+import {TaskType} from "../todolists/Todolist";
 import {addTaskAC, changeTaskStatusAC, changeTaskTitleAC, removeTaskAC, tasksReducer} from './tasks-reducer';
-import {addTodolistAC, removeTodolistAC} from './todolists-reducer';
-import {TasksStateType} from "../AppWithRedux";
-import {TaskType} from "../Todolist";
 
 let startState: TasksStateType = {};
 beforeEach(() => {
     startState = {
         "todolistId1": [
-            { id: "1", title: "CSS", isDone: false },
-            { id: "2", title: "JS", isDone: true },
-            { id: "3", title: "React", isDone: false }
+            { id: "1", title: "CSS", isDone: false, tag:'' },
+            { id: "2", title: "JS", isDone: true, tag:'' },
+            { id: "3", title: "React", isDone: false, tag:'' }
         ],
         "todolistId2": [
-            { id: "1", title: "bread", isDone: false },
-            { id: "2", title: "milk", isDone: true },
-            { id: "3", title: "tea", isDone: false }
+            { id: "1", title: "bread", isDone: false, tag:'' },
+            { id: "2", title: "milk", isDone: true, tag:'' },
+            { id: "3", title: "tea", isDone: false, tag:'' }
         ]
     };
 });
@@ -29,14 +29,14 @@ test('correct task should be deleted from correct array', () => {
     expect(endState["todolistId2"].every((t: TaskType): boolean => t.id != "2")).toBeTruthy();
 });
 test('correct task should be added to correct array', () => {
-    const action = addTaskAC("juce", "todolistId2");
+    const action = addTaskAC("juice", "todolistId2");
 
     const endState = tasksReducer(startState, action)
 
     expect(endState["todolistId1"].length).toBe(3);
     expect(endState["todolistId2"].length).toBe(4);
     expect(endState["todolistId2"][0].id).toBeDefined();
-    expect(endState["todolistId2"][0].title).toBe("juce");
+    expect(endState["todolistId2"][0].title).toBe("juice");
     expect(endState["todolistId2"][0].isDone).toBe(false);
 });
 test('status of specified task should be changed', () => {
