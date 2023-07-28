@@ -7,7 +7,6 @@ export type RemoveTaskActionType = ReturnType<typeof removeTaskAC>;
 export type AddTaskActionType = ReturnType<typeof addTaskAC>;
 export type ChangeTaskStatusActionType = ReturnType<typeof changeTaskStatusAC>;
 export type ChangeTaskTitleActionType = ReturnType<typeof changeTaskTitleAC>;
-// export type AddTagActionType = ReturnType<typeof addTagAC>;
 
 type ActionsType =
   | RemoveTaskActionType
@@ -16,7 +15,6 @@ type ActionsType =
   | ChangeTaskTitleActionType
   | AddTodolistActionType
   | RemoveTodolistActionType;
-// | AddTagActionType;
 
 const initialState: TasksStateType = {};
 
@@ -59,31 +57,10 @@ export const tasksReducer = (state: TasksStateType = initialState, action: Actio
       return {
         ...state,
         [action.todolistId]: state[action.todolistId].map((el) =>
-          el.id === action.taskId
-            ? {
-                ...el,
-                title: action.title,
-              }
-            : el
+          el.id === action.taskId ? { ...el, title: action.title, tag: action.tag || null } : el
         ),
       };
     }
-
-    // case "ADD-TAG":
-    //   return {
-    //     ...state,
-    //     [action.todolistId]: [
-    //       ...state[action.todolistId].map((el) =>
-    //         el.id === action.taskId
-    //           ? {
-    //               ...el,
-    //               tag: action.tag,
-    //             }
-    //           : el
-    //       ),
-    //     ],
-    //   };
-
     case "ADD-TODOLIST": {
       return {
         ...state,
@@ -96,7 +73,6 @@ export const tasksReducer = (state: TasksStateType = initialState, action: Actio
       delete copyState[action.id];
       return copyState;
     }
-
     default:
       return state;
   }
@@ -111,9 +87,6 @@ export const addTaskAC = (title: string, todolistId: string, tag?: string) => {
 export const changeTaskStatusAC = (taskId: string, isDone: boolean, todolistId: string) => {
   return { type: "CHANGE-TASK-STATUS", isDone, todolistId, taskId } as const;
 };
-export const changeTaskTitleAC = (taskId: string, title: string, todolistId: string) => {
-  return { type: "CHANGE-TASK-TITLE", title, todolistId, taskId } as const;
+export const changeTaskTitleAC = (taskId: string, title: string, todolistId: string, tag?: string) => {
+  return { type: "CHANGE-TASK-TITLE", title, todolistId, taskId, tag } as const;
 };
-// export const addTagAC = (taskId: string, tag: string, todolistId: string) => {
-//   return { type: "ADD-TAG", todolistId, taskId, tag } as const;
-// };

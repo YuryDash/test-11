@@ -1,10 +1,10 @@
-import {Delete} from "@mui/icons-material";
-import {Button, IconButton} from "@mui/material";
-import React, {ChangeEvent} from "react";
-import {FilterValuesType} from "../../AppWithRedux";
-import {AddItemForm} from "../../components/AddItemForm/AddItemForm";
-import {EditableSpan} from "../../components/EditableSpan/EditableSpan";
-import {Task} from "../tasks/Task";
+import { Delete } from "@mui/icons-material";
+import { Button, IconButton } from "@mui/material";
+import React, { ChangeEvent } from "react";
+import { FilterValuesType } from "../../AppWithRedux";
+import { AddItemForm } from "../../components/AddItemForm/AddItemForm";
+import { EditableSpan } from "../../components/EditableSpan/EditableSpan";
+import { Task } from "../tasks/Task";
 import Tooltip from "@mui/material/Tooltip";
 
 export type TaskType = {
@@ -25,7 +25,7 @@ type PropsType = {
   removeTodolist: (id: string) => void;
   changeTodolistTitle: (id: string, newTitle: string) => void;
   filter: FilterValuesType;
-  changeTaskTitle: (taskId: string, newTitle: string, todolistId: string) => void;
+  changeTaskTitle: (taskId: string, newTitle: string, todolistId: string, tag?: string) => void;
 };
 
 export function Todolist(props: PropsType) {
@@ -48,15 +48,15 @@ export function Todolist(props: PropsType) {
   return (
     <div>
       <h3>
-        <EditableSpan value={props.title} onChange={changeTodolistTitle}/>
+        <EditableSpan value={props.title} onChange={changeTodolistTitle} />
         <Tooltip title="Delete">
           <IconButton onClick={removeTodolist}>
-            <Delete/>
+            <Delete />
           </IconButton>
         </Tooltip>
       </h3>
 
-      <AddItemForm addItem={addTask}/>
+      <AddItemForm addItem={addTask} />
 
       <div>
         {props.tasks.map((t) => {
@@ -65,8 +65,8 @@ export function Todolist(props: PropsType) {
             let newIsDoneValue = e.currentTarget.checked;
             props.changeTaskStatus(t.id, newIsDoneValue, props.id);
           };
-          const onTitleChangeHandler = (newValue: string) => {
-            props.changeTaskTitle(t.id, newValue, props.id);
+          const onTitleChangeHandler = (newValue: string, tag?: string) => {
+            props.changeTaskTitle(t.id, newValue, props.id, tag);
           };
           return (
             <Task
@@ -79,7 +79,7 @@ export function Todolist(props: PropsType) {
           );
         })}
       </div>
-      <div style={{paddingTop: "10px"}}>
+      <div style={{ paddingTop: "10px" }}>
         <Button variant={props.filter === "all" ? "outlined" : "text"} onClick={onAllClickHandler} color={"inherit"}>
           All
         </Button>
